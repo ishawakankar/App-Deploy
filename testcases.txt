@@ -1,0 +1,8 @@
+// GIT URL /newApp
+
+200 ok 
+500 server error
+
+/login
+
+username, passowrd
