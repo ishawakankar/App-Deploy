@@ -2,15 +2,30 @@
 
 URL=$1
 REPO=$2
-cd gitDirectories && git clone $URL $REPO 
+DIRECTORY="gitRepositories"
+if [ ! -d $DIRECTORY ]; then
+  mkdir $DIRECTORY
+fi
+
+cd $DIRECTORY 
+if [ ! -d $REPO ]
+then
+    git clone --progress $URL $REPO 
+    cd $REPO
+else
+    cd $REPO
+    git pull $URL
+fi
+
 OUT=$?
+
 if [ $OUT -eq 0 ]
 then
-   echo "git clone successful"
-    cd $REPO
+     echo "git clone successful"
     dockerFile="docker-compose.yml"
     if [ -f $dockerFile ]
-    then
+    then  
+          
           docker-compose up --build 
           exit 0;
     else 

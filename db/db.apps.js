@@ -1,84 +1,64 @@
 const appsModel = require('../db/models/apps');
+const dateFormat = require('dateformat');
 const { Subject } = require('rxjs');
 let s = new Subject();
 
-function addApp(req){ //to add app (req is the object to add in table user_apps) 
- const app = new appsModel(req);
-//  const observable = Observable.create((observer) => {
-   app.save((error, doc) => {
-     try{
-       s.next(doc)
-     }catch(error) {
-       s.error(error)
-     }
-   })
-//  })
- return s;  
+function addApp(req) {
+  const app = new appsModel(req);
+  app.save();
 }
 
-//to find and update app if it is not present it will be inserted (req is the object to find in table user_apps)
-function findAndUpdateApp(req){ 
-  // const observable = Observable.create((observer) => {
-    appsModel.findOneAndUpdate(req,{
-      timestamp:Date.now()
-      },{
+function findAndUpdateApp(req) {
+  appsModel.findOneAndUpdate(req, {
+    timestamp: dateFormat(new Date, "dddd, dS mmmm, yyyy, h:MM:ss TT")
+  }, {
       upsert: true,
       new: true
-    },(error, doc) => {
-        try{
-          s.next(doc)
-        }catch(error) {
-          s.error(error)
-      }
-    })
-  // })
-  return s;
-}
-
-function getUserApps(userid){ // to get users app from user_apps table by user id
-  // const observable = Observable.create((observer) => {
-    appsModel.find({ userId: userid }, 'app_name app_URL status' , function (err, doc) {
-      try{
+    }, (error, doc) => {
+      try {
         s.next(doc)
-      }catch(error) {
+      } catch (error) {
         s.error(error)
       }
     })
-  // })
   return s;
 }
 
-function getAppByAppURL(req){ //to get apps by app_URL and user id from user_apps table
-  // const observable = Observable.create((observer) => {
-    appsModel.find(req, function (err, doc) {
-      try{
-        s.next(doc)
-      }catch(error) {
-        s.error(error)
-      }
-    })
-  // })
-  return s;
+function getUserApps() {
+  return new Promise((resolve, reject) => {
+    appsModel.find(null, function (err, doc) {
+      resolve(doc);
+    });
+  })
+
 }
 
-function deleteApp(req){ // to delete app for a particular user by app_URL and userid
-  // const observable = Observable.create((observer) => {
-    appsModel.findOneAndDelete({ app_URL: req.app_URL, userId : req.userId , appId: req.appId }, function (err, doc) {
-      try{
-        s.next(doc)
-      }catch(error) {
-        s.error(error)
-      }
-    })
-  // })
-  return s;
+function getAppByAppURL(req) {
+  appsModel.find(req, function (err, doc) {
+    try {
+      s.next(doc)
+    } catch (error) {
+      s.error(error)
+    }
+  })
+  return observable;
 }
 
+function deleteApp(req) {
+  appsModel.findOneAndDelete({ app_URL: req.app_URL, userId: req.userId, appId: req.appId }, function (err, doc) {
+    try {
+      s.next(doc)
+    } catch (error) {
+      s.error(error)
+    }
+  })
+  return s;
+}
 
 module.exports = {
-  addApp : addApp,
-  findAndUpdateApp :findAndUpdateApp,
-  getUserApps : getUserApps,
-  getAppByAppURL : getAppByAppURL,
+  addApp: addApp,
+  findAndUpdateApp: findAndUpdateApp,
+  getUserApps: getUserApps,
+  getAppByAppURL: getAppByAppURL,
   deleteApp: deleteApp
 }

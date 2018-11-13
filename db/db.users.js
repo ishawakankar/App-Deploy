@@ -26,7 +26,7 @@ function getUserByName(req){ // to get user details by users table
       }
     })
   // })
-  return s;
+  return observable;
 }
 
 function deleteUser(userid){ // to delete user for a particular user id
@@ -39,7 +39,7 @@ function deleteUser(userid){ // to delete user for a particular user id
       }
     })
   // })
-  return s;
+  return observable;
 }
 
 function findAndUpdateUser(old_data,new_data){ // find user by old_data and update user by new_data

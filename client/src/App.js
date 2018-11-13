@@ -25,7 +25,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <a className="App-link" id="loginButton" href="http://localhost:5000/auth"> Connect using Gitlab </a>
+          <a className="App-link" id="loginButton" href={`/auth`}> Connect using Gitlab </a>
           {/* <button onClick={this.test}> test </button> */}
         </header>
       </div>

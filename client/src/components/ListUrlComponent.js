@@ -8,42 +8,35 @@ import Avatar from '@material-ui/core/Avatar';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import HomePageComponent from './HomePageComponent';
 import '../styles/ListUrlComponent.css';
-//import queryString from "query-string";
-//const Rx = require('rxjs');
-const moment = require('moment');
+import * as Rx from 'rxjs-compat'
+
 
 class ListUrlComponent extends React.Component {
-  // const token = queryString.parse(props.location.search).token;
-  // if (!token) {
-  //     window.localStorage.setItem("jwt",token);
-  //     props.history.push("/");
-  //  }
+ 
   constructor(props){
     super(props);
     this.state = {
-      listdata: []
+      listdata: [],
+      data:[]
     };
   }
 
-  
-  componentWillMount(){
-   fetch('/apps')
-             .then(data => data.json()).then( r => {
-               this.setState({listdata: r});
-             })
-      this.setState({
 
-      });
+  componentWillMount(){
+    Rx.Observable.fromPromise(fetch('/apps').then((data)=>data.json()))
+    .subscribe((data)=>{
+      this.setState({
+        data:data
+      })
+    });
   }
   
   render(){
-  //const { classes } = this.props;
-  //const data = ['css', 'html', 'javascript', 'nodejs','react'];
-  const {listdata} = this.state;
+    console.log(this.state.data)
   return (
     <div>
       <HomePageComponent />
-      {listdata.map((x) =>
+      {this.state.data.map((x , i) =>
           <div className="root">
             <Card className="card">
               <CardHeader
@@ -52,9 +45,8 @@ class ListUrlComponent extends React.Component {
                     <CheckCircle className="checkCircle" />
                   </Avatar>
                 }
-                title={x.app_name}
-                subheader={moment().format('MMMM Do YYYY, h:mm:ss a')} 
-                                
+                title={x.app_name  + "( Id: " + x.appId + " )"}
+                subheader="September 14, 2016"
               />
             </Card>
           </div>
@@ -65,4 +57,3 @@ class ListUrlComponent extends React.Component {
 }
 }
 export default (ListUrlComponent);
-

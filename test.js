@@ -1,5 +1,5 @@
 const chai = require('chai');
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 chai.should();
 // var sinon = require('sinon');
 var express = require('express');
@@ -28,6 +28,8 @@ describe('Route', function () {
       .end(function (err, res) {
         if (err) throw err;
         // console.log(res)
+        res.should.not.console.error();
+        
         console.log('\n')
         console.log('ExpressRoute:  /auth')
         console.log('Status: ' + res.status + ', ' + res.res.statusMessage)

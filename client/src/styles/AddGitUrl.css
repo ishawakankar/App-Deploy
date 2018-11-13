@@ -7,7 +7,7 @@
 .root1 {
     width: 80%;
     margin: auto;
-    margin-top: 7%;
+    margin-top: 5%;
 }
 
 .text1 {
@@ -27,6 +27,13 @@
 
 .button1 {
     margin-top: 2%;
+}
+
+.root2
+{
+    width: 80%;
+    margin: auto;
+    margin-top: 1%;
 }
 
 /* body{
