@@ -6,17 +6,23 @@
   "scripts": {
     "server": "node server.js",
     "client": "cd client && npm run start",
-    "start": "concurrently 'npm run server' 'npm run client'"
+    "start": "concurrently 'npm run server' 'npm run client'",
+    "test": "mocha --compilers babel-register"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
     "config": "^2.0.1",
     "dateformat": "^3.0.3",
     "express": "^4.16.4",
     "express-winston": "^3.0.1",
+    "mocha": "^5.2.0",
     "mongoose": "^5.3.7",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -26,6 +32,7 @@
     "rxjs-compat": "^6.3.3",
     "shelljs": "^0.8.2",
     "socket.io": "^2.1.1",
+    "supertest": "^3.3.0",
     "winston": "^3.1.0"
   },
   "devDependencies": {

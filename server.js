@@ -114,3 +114,5 @@ function storeData(url, appName, appId, status) {
         app_URL: url
     });
 }
+
+module.exports.app= app;
