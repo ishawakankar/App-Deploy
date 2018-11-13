@@ -28,7 +28,12 @@ describe('Route', function()
         request.get('/auth')
         .end(function(err, res) {
           if (err) throw err;
-          console.log(res)
+          // console.log(res)
+          console.log('\n')
+          console.log('Status: '+res.status+', '+res.res.statusMessage)
+          console.log('Url: '+res.headers.location)
+           console.log('ClientError: '+res.clientError)
+              console.log('ServerError: '+res.serverError)
         });
           //  .expect('Content-Type', "application/json")
           // .then(res => {
@@ -39,7 +44,7 @@ describe('Route', function()
           //     // console.log('ServerError: '+res.serverError)
           //     // console.log(res.error.Error)
           // }).catch((err)=>console.log(err))
-
+        done();
       })
     
       // it('/auth', function()
