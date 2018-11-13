@@ -1,63 +1,46 @@
 const chai = require('chai');
-// const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 chai.should();
 // var sinon = require('sinon');
-// var express = require('express');
-// const supertest = require('supertest');
+var express = require('express');
+const supertest = require('supertest');
+const serverObject = require('./server');
+const app = serverObject.app;
+// const server = serverObject.server;
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-const server = require('./server');
 
 describe('Route', function()
 {
-    var app, getUserStub, request, route;
+    var  getUserStub, request, route, serverRequest;
 
     beforeEach(function () {
         // getUserStub = sinon.stub();
         // app = express();
     
-        request = chai.request(server);
-        // request = supertest(server)
+        request = supertest(app);
+        // request = chai.request(app);
       });
 
-      it('should respond with a 404 and a null', function (done) {
-        //getUserStub.returns(null);
+      it('should respond with res object', function (done) {
+        // getUserStub.returns(null);
     
-        request
-          .get('http://localhost:5000/auth').then((res,err) => {
-              if(res)
-              {
-                  console.log(res)
-              }
-              else
-              {
-                  console.log(err)
-              }
-          })
-          done();
-      });
-    
-      it('should respond with 200 and a user object', function (done) {
-        // var userData = {
-        //   username: 'nodejs'
-        // };
-    
-        // getUserStub.returns(userData);
-    
-        request
-          .get('http://localhost:5000/auth').then((res,err) => {
-              if(res)
-              {
-                  console.log(res)
-              }
-              else
-              {
-                  console.log(err)
-              }
-          })
-          done();
-      });
-    
+        request.get('/auth')
+        .end(function(err, res) {
+          if (err) throw err;
+          console.log(res)
+        });
+          //  .expect('Content-Type', "application/json")
+          // .then(res => {
+                
+          //     //   console.log('ExpressRoute: /auth')
+          //     console.log('Status: '+res.status+', '+res.res.statusMessage)
+          //     // console.log('ClientError: '+res.clientError)
+          //     // console.log('ServerError: '+res.serverError)
+          //     // console.log(res.error.Error)
+          // }).catch((err)=>console.log(err))
+
+      })
     
       // it('/auth', function()
     // {
@@ -70,15 +53,3 @@ describe('Route', function()
     // })
 })
 
-// var request = require('supertest');
-// var express = require('express');
-// var app = express();
-
-// describe('test cases', function()
-// {
-//     it('home page test', function()
-//     {
-//         request(app).get('/')
-//         .expect(200)
-//     })
-// })
