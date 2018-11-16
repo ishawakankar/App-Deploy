@@ -1,4 +1,5 @@
 const appsModel = require('../db/models/apps');
+const userModel = require('../db/models/users');
 const dateFormat = require('dateformat');
 const { Subject } = require('rxjs');
 let s = new Subject();
@@ -33,6 +34,14 @@ function getUserApps() {
 
 }
 
+function getUsers() {
+  return new Promise((resolve, reject) => {
+    userModel.find(null, function (err, doc) {
+      resolve(doc);
+    })
+  })
+}
+
 function getAppByAppURL(req) {
   appsModel.find(req, function (err, doc) {
     try {
@@ -59,6 +68,7 @@ module.exports = {
   addApp: addApp,
   findAndUpdateApp: findAndUpdateApp,
   getUserApps: getUserApps,
+  getUsers: getUsers,
   getAppByAppURL: getAppByAppURL,
   deleteApp: deleteApp
 }

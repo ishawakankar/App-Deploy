@@ -1,7 +1,7 @@
 const env = require('./env_config');
 const passport = require('passport');
 var GitlabStrategy = require('passport-gitlab2').Strategy;
-const keys = require('./config/keys');
+const keys = require('./config/keys2');
 const db = require('./db/db');
 const { addUser } = require("./db/db.users");
 const config = require('config');
@@ -30,6 +30,7 @@ passport.use(new GitlabStrategy({
             profileUrl: profile.profileUrl
         }
         const obs = addUser(req_obj);
+        // console.log(profile)
         obs.subscribe(doc => console.log("subscribe ", doc));
         done(null, profile);
     }

@@ -33,13 +33,20 @@ app.use(expressWinston.logger({
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+
 app.use('/auth', authRouter);
+
 
 const server = app.listen(port, () => {
     console.log("listening on port 5000 for app" + config.get('rxjs.app'));
 })
 
 const io = sockets(server);
+
+
+
 app.post("/deploy", (req, res) => {
     let repoUrl, repo, appID;
     const requestResponseObservable = Observable.create((o) => {
@@ -80,15 +87,32 @@ app.post("/deploy", (req, res) => {
 })
 
 
+
+
 app.get("/apps", (req, res) => {
     appDb.getUserApps()
         .then((data) => {
             res.json(data);
         })
         .catch((err) => console.log(err));
-    ;
+    // console.log(req);
 })
 
+app.get("/profile", (req, res) => {
+    appDb.getUsers()
+    .then((data) => {
+        res.json(data);
+    })
+    .catch((err) => console.log(err));
+    console.log(req);
+})
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    // res.redirect('/');
+    console.log('redirect to home');
+    res.send('logging out');
+  });
 
 app.use(expressWinston.errorLogger({
     transports: [

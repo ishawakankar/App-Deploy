@@ -17,8 +17,22 @@ class AddGitURL extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      context: ''
+      context: '',
+      data: []
     }
+  }
+
+  componentWillMount()
+  {
+    Rx.Observable.fromPromise(fetch('/auth').then((data)=>data.json()))
+    .subscribe((data)=>{
+      this.setState({
+        data:data
+      })
+      console.log('After fetching auth in add git'+data)
+    });
+
+    
   }
 
   componentDidMount() {

@@ -8,7 +8,8 @@ import Avatar from '@material-ui/core/Avatar';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import HomePageComponent from './HomePageComponent';
 import '../styles/ListUrlComponent.css';
-import * as Rx from 'rxjs-compat'
+import * as Rx from 'rxjs-compat';
+const moment =  require('moment');
 
 
 class ListUrlComponent extends React.Component {
@@ -46,7 +47,7 @@ class ListUrlComponent extends React.Component {
                   </Avatar>
                 }
                 title={x.app_name  + "( Id: " + x.appId + " )"}
-                subheader="September 14, 2016"
+                subheader={moment().format('llll')}
               />
             </Card>
           </div>

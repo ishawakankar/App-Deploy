@@ -7,7 +7,7 @@ class App extends Component {
 
   test() {
     console.log("clicked");
-    const url = "https://github.com/yravinderkumar33/portfolio.git";
+    const url = "https://github.com/ishawakankar/test2.git";
     fetch(`/deploy`, {
       method: 'POST',
       headers: {

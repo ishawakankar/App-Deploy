@@ -25,7 +25,7 @@ describe('Testing Express Routes:', function () {
     //   .expect(302)
       .end(function (err, res) {
         if (err) throw err;
-        
+        // console.log(res.body)
         res.should.status(302)
         // expect(2).to.equal(3)
         // chai.assert('')
