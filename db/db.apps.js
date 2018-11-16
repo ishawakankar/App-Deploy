@@ -1,6 +1,4 @@
 const appsModel = require('../db/models/apps');
-const userModel = require('../db/models/users');
-const dateFormat = require('dateformat');
 const { Subject } = require('rxjs');
 let s = new Subject();
 
@@ -11,7 +9,7 @@ function addApp(req) {
 
 function findAndUpdateApp(req) {
   appsModel.findOneAndUpdate(req, {
-    timestamp: dateFormat(new Date, "dddd, dS mmmm, yyyy, h:MM:ss TT")
+    timestamp: Date.now()
   }, {
       upsert: true,
       new: true
@@ -34,14 +32,6 @@ function getUserApps() {
 
 }
 
-function getUsers() {
-  return new Promise((resolve, reject) => {
-    userModel.find(null, function (err, doc) {
-      resolve(doc);
-    })
-  })
-}
-
 function getAppByAppURL(req) {
   appsModel.find(req, function (err, doc) {
     try {
@@ -50,7 +40,7 @@ function getAppByAppURL(req) {
       s.error(error)
     }
   })
-  return observable;
+  return s;
 }
 
 function deleteApp(req) {
@@ -68,7 +58,6 @@ module.exports = {
   addApp: addApp,
   findAndUpdateApp: findAndUpdateApp,
   getUserApps: getUserApps,
-  getUsers: getUsers,
   getAppByAppURL: getAppByAppURL,
   deleteApp: deleteApp
 }

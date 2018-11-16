@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost/git_app_data")
+// mongoose.connect('mongodb://mongo_db:27017/git_app_data');
 
 function db() {
     const connection = mongoose.connection;

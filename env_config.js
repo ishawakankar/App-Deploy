@@ -1,4 +1,4 @@
-env = {
+const env = {
     HPORT : process.env.HPORT
 }
 

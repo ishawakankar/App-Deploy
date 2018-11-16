@@ -1,18 +1,18 @@
 version: '3'
 services:
   app:
-    container_name: backend12
+    container_name: backend1234
     build: ./
-    ports:
-      - 5000:5000
+    env_file:
+      - ./env_ports.env
     links:
-      - mongo
-    depends_on:
-      - mongo
-  
-  
-  mongo:
-    container_name: db123
-    image: mongo
+      - mongo_db
     ports:
-      - 27014:27017
+      - 5002:5000  
+    depends_on:
+      - mongo_db
+  
+  
+  mongo_db:
+    container_name: database12
+    image: mongo

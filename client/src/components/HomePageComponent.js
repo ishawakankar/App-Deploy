@@ -14,7 +14,7 @@ import '../styles/homepage.css';
 function HomePageComponent() {
   return (
     <div className="root">
-      <AppBar position="static" className="app">
+      <AppBar position="static" className="app" >
         <Toolbar>
           <Link to={`/home`} className="lnk">
             <IconButton className="menuButton" color="inherit" aria-label="Menu">

@@ -1,13 +1,15 @@
 
+
+
 .card {
-    max-width: 80% !important;
-    margin-top: 1% !important;
+    max-width: 80%;
+    margin-top: 1%;
 }
     
-.avatar {
+.avatar1 {
     background-color: green;
 }
 
 .checkCircle {
-   height: 1.5em !important;
+   height: 1.5em;
 }

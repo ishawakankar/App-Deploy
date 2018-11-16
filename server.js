@@ -11,42 +11,37 @@ const port = process.env.PORT || 5000;
 const sockets = require('socket.io');
 const config = require('config');
 const appDb = require('./db/db.apps');
+const userDb = require('./db/db.users');
 const path = require('path');
 var expressWinston = require('express-winston');
 var winston = require('winston');
+var fs = require('fs');
 
 app.use(express.static(path.join(__dirname, './client/build')));
-
+app.use(express.static(path.join(__dirname, './logs')));
 app.use(expressWinston.logger({
     transports: [
-      new winston.transports.Console({
-        json: true,
-        colorize: true
-      }),
-      new winston.transports.File({
-        filename: 'access.log',
-        level: 'info'
-    })
+        new winston.transports.Console({
+            json: true,
+            colorize: true
+        }),
+        new winston.transports.File({
+            filename: 'access.log',
+            level: 'info'
+        })
     ]
-  }));
+}));
 
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
 app.use('/auth', authRouter);
-
 
 const server = app.listen(port, () => {
     console.log("listening on port 5000 for app" + config.get('rxjs.app'));
 })
 
 const io = sockets(server);
-
-
-
 app.post("/deploy", (req, res) => {
     let repoUrl, repo, appID;
     const requestResponseObservable = Observable.create((o) => {
@@ -61,7 +56,7 @@ app.post("/deploy", (req, res) => {
 
     const zipped = zip(url, repoName);
     const emission = zipped.pipe(concatMap((data) => {
-        const command = spawn(`./script.sh`, [data[0], data[1]]);
+        const command = spawn(`./script2.sh`, [data[0], data[1]]);
         repoUrl = data[0];
         repo = data[1];
         const stdout = fromEvent(command.stdout, 'data');
@@ -69,13 +64,34 @@ app.post("/deploy", (req, res) => {
         return merge(stdout, stderr).pipe(map((data) => data.toString('utf-8')));
     }));
 
-    emission.subscribe(
+    const logs = emission.pipe(tap(x => {
+        fs.stat("logs", (err, stats) => {
+            if (err) {
+                fs.mkdir("logs", (err) => {
+                    console.error("error occured while creating directory", err);
+                })
+            }
+            let data = `[  ${new Date()} ]:- ${x}`
+            fs.writeFile(`logs/${repo}.log`, data, { flag: 'a' }, (err) => {
+                if (err) throw err;
+                console.log('The file has been saved!');
+            })
+        })
+    }))
+
+
+    const databaseEntry = logs.pipe(tap((x) => {
+        appID = x.split(" ")[x.split(" ").length - 1]
+        if (String(x).includes("Successfully built")) {
+            storeData(repoUrl, repo, appID, "true");
+        } else {
+            storeData(repoUrl, repo, -1, "false");
+        }
+    }))
+
+    databaseEntry.subscribe(
         x => {
             console.log('data', x);
-            if (String(x).includes("Successfully built")) {
-                appID = x.split(" ")[x.split(" ").length - 1]
-                storeData(repoUrl, repo, appID, "true");
-            }
 
             io.emit('chat', x);
         },
@@ -86,20 +102,17 @@ app.post("/deploy", (req, res) => {
     )
 })
 
-
-
-
 app.get("/apps", (req, res) => {
     appDb.getUserApps()
         .then((data) => {
             res.json(data);
         })
         .catch((err) => console.log(err));
-    // console.log(req);
+    ;
 })
 
 app.get("/profile", (req, res) => {
-    appDb.getUsers()
+    userDb.getUsers()
     .then((data) => {
         res.json(data);
     })
@@ -107,12 +120,10 @@ app.get("/profile", (req, res) => {
     console.log(req);
 })
 
-app.get("/logout", (req, res) => {
-    req.logout();
-    // res.redirect('/');
-    console.log('redirect to home');
-    res.send('logging out');
-  });
+app.get("/downloadLog/:name", (req, res) => {
+  console.log(req.params.name);
+  res.send("file is being downloaded")
+})
 
 app.use(expressWinston.errorLogger({
     transports: [
@@ -127,7 +138,6 @@ app.use(expressWinston.errorLogger({
     ]
 }));
 
-
 function storeData(url, appName, appId, status) {
     appDb.addApp({
         appId: appId,
@@ -138,5 +148,6 @@ function storeData(url, appName, appId, status) {
         app_URL: url
     });
 }
+
 
 module.exports.app= app;

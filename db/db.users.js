@@ -16,6 +16,14 @@ function addUser(req){ // to add user to users table
   return s;
 }
 
+function getUsers() {
+  return new Promise((resolve, reject) => {
+    userModel.find(null, function (err, doc) {
+      resolve(doc);
+    })
+  })
+}
+
 function getUserByName(req){ // to get user details by users table
   // const observable = Observable.create((observer) => {
     userModel.find({userName:req.userName},function (err, doc){
@@ -26,7 +34,7 @@ function getUserByName(req){ // to get user details by users table
       }
     })
   // })
-  return observable;
+  return s;
 }
 
 function deleteUser(userid){ // to delete user for a particular user id
@@ -39,7 +47,7 @@ function deleteUser(userid){ // to delete user for a particular user id
       }
     })
   // })
-  return observable;
+  return s;
 }
 
 function findAndUpdateUser(old_data,new_data){ // find user by old_data and update user by new_data
@@ -61,6 +69,7 @@ function findAndUpdateUser(old_data,new_data){ // find user by old_data and upda
 module.exports = { 
   addUser : addUser,
   getUserByName : getUserByName,
+  getUsers: getUsers,
   deleteUser : deleteUser,
   findAndUpdateUser : findAndUpdateUser
 }

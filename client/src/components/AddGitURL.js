@@ -11,32 +11,19 @@ import '../styles/AddGitUrl.css';
 import * as Rx from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import io from 'socket.io-client';
-
+// const env = require('../../../env_config');
 
 class AddGitURL extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      context: '',
-      data: []
+      context: ''
     }
-  }
-
-  componentWillMount()
-  {
-    Rx.Observable.fromPromise(fetch('/auth').then((data)=>data.json()))
-    .subscribe((data)=>{
-      this.setState({
-        data:data
-      })
-      console.log('After fetching auth in add git'+data)
-    });
-
-    
+    this.handleClickButton = this.handleClickButton.bind(this);
   }
 
   componentDidMount() {
-    const socket = io('http://localhost:5000');
+    const socket = io(); 
     console.log('before rxjs');
     Rx.fromEvent(document.getElementById("outlined-email-input"), "click")
       .pipe(map(() => {
@@ -59,6 +46,7 @@ class AddGitURL extends React.Component {
           .then(res => res.json())
           .then(res => {
             if (res) {
+              console.log('response is: ',res);
               this.setState({ context: '' })
             }
             return res;
@@ -73,7 +61,7 @@ class AddGitURL extends React.Component {
 
   }
 
-  handleClickButton = () => {
+  handleClickButton() {
     console.log('inside handleClickButton', this.state.loading);
     if (document.getElementById("outlined-email-input2").value) {
       this.setState({
@@ -107,9 +95,10 @@ class AddGitURL extends React.Component {
               id="outlined-email-input"
               name="buttonSubmit"
               onClick={this.handleClickButton}
+              onPress = {this.props.onClick}
             >
-              Deploy
-                        </Button>
+              <h5>Deploy</h5>
+                </Button>
             {context}
           </div>
         </Paper>

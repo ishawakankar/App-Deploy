@@ -5,8 +5,8 @@ import {HashRouter, Route, Switch} from 'react-router-dom';
 import App from '../App';
 import ListUrlComponent from '../components/ListUrlComponent';
 import AddGitURL from '../components/AddGitURL';
-// import Home from '../components/Home';
-import HomeProfile from '../components/HomeProfile'
+import HomeProfile from '../components/HomeProfile';
+
 
 function AppRouter () {
    return ( <HashRouter>
