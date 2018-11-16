@@ -105,7 +105,7 @@ class ListUrlComponent extends React.Component {
               >
                 <ExpandMoreIcon />
               </IconButton>
-              <button onClick={()=>this.test(x.app_name)}> click me  </button>
+              <button onClick={()=>this.test(x.app_name)}> Download Log  </button>
 
               <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                 <CardContent>

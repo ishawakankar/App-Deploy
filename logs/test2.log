@@ -22,3 +22,9 @@ Dockerfile not found.
 git clone successful
 docker-compose.yml file not found
 Dockerfile not found.
+[  Fri Nov 16 2018 15:39:13 GMT+0530 (IST) ]:- From https://github.com/ishawakankar/test2
+ * branch            HEAD       -> FETCH_HEAD
+[  Fri Nov 16 2018 15:39:13 GMT+0530 (IST) ]:- Already up to date.
+git clone successful
+docker-compose.yml file not found
+Dockerfile not found.

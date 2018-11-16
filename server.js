@@ -11,7 +11,6 @@ const port = process.env.PORT || 5000;
 const sockets = require('socket.io');
 const config = require('config');
 const appDb = require('./db/db.apps');
-const userDb = require('./db/db.users');
 const path = require('path');
 var expressWinston = require('express-winston');
 var winston = require('winston');
@@ -19,6 +18,7 @@ var fs = require('fs');
 
 app.use(express.static(path.join(__dirname, './client/build')));
 app.use(express.static(path.join(__dirname, './logs')));
+
 app.use(expressWinston.logger({
     transports: [
         new winston.transports.Console({
@@ -108,16 +108,19 @@ app.get("/apps", (req, res) => {
             res.json(data);
         })
         .catch((err) => console.log(err));
-    ;
+    
 })
 
 app.get("/profile", (req, res) => {
-    userDb.getUsers()
-    .then((data) => {
-        res.json(data);
-    })
-    .catch((err) => console.log(err));
-    console.log(req);
+    var testdata = passportSetup()._json;
+    if(Object.keys(testdata).length === 0) {
+        console.log('null')
+    }
+    res.json(testdata);
+})
+
+app.get("/logout", (req, res) => {
+    res.redirect('/');
 })
 
 app.get("/downloadLog/:name", (req, res) => {

@@ -1,5 +1,6 @@
 const env = require('./env_config');
 const passport = require('passport');
+var userprofile = [];
 var GitlabStrategy = require('passport-gitlab2').Strategy;
 const keys = require('./config/keys');
 const db = require('./db/db');
@@ -29,10 +30,18 @@ passport.use(new GitlabStrategy({
             email: profile._json.email,
             profileUrl: profile.profileUrl
         }
-        const obs = addUser(req_obj);   
-        console.log(profile);
+        const obs = addUser(req_obj);
+        userprofile = profile;
         obs.subscribe(doc => console.log("subscribe ", doc));
         done(null, profile);
     }
 ));
+
+module.exports = function display()
+{   
+    return userprofile;
+}
+
+
+
 

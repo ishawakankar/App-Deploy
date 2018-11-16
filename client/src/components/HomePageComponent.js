@@ -5,11 +5,13 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Home from '@material-ui/icons/Home';
 import { Link } from 'react-router-dom';
-
 import '../styles/homepage.css';
+
+
 
 function HomePageComponent() {
   return (
@@ -31,8 +33,15 @@ function HomePageComponent() {
              NewApp 
           </Typography>
           </Link>
-          <span className="heading">
-          Rx-Actor Model</span>
+          {/* <span className="heading">
+          Rx-Actor Model</span> */}
+        
+          <Button className="heading"
+          color="inherit"
+          href={`/logout`}>
+          Logout
+        </Button>
+
         </Toolbar>
       </AppBar>
     </div>

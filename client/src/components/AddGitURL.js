@@ -97,7 +97,7 @@ class AddGitURL extends React.Component {
               onClick={this.handleClickButton}
               onPress = {this.props.onClick}
             >
-              <h5>Deploy</h5>
+              Deploy
                 </Button>
             {context}
           </div>
